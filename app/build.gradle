@@ -25,6 +25,7 @@ android {
 
     buildFeatures{
         viewBinding true
+        dataBinding true
     }
 
     buildTypes {
@@ -85,5 +86,8 @@ dependencies {
     // Kotlin components
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1"
+
+    //RecyclerView Animator
+    implementation 'jp.wasabeef:recyclerview-animators:4.0.2'
 
 }
