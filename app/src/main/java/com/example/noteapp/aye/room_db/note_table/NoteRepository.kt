@@ -6,7 +6,12 @@ import javax.inject.Inject
 class NoteRepository @Inject constructor(
     private val noteDao: NoteDao
 ) {
+
     fun fetchNote(): Flow<List<Note>> {
         return noteDao.fetchAllData()
+    }
+
+    suspend fun insertRecord(note: Note) {
+        return noteDao.insertData(note)
     }
 }
