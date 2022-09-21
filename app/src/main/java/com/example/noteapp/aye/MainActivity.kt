@@ -1,11 +1,11 @@
 package com.example.noteapp.aye
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.ViewGroup
-import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 import com.example.noteapp.aye.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
