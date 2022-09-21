@@ -2,6 +2,8 @@ package com.example.noteapp.aye
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.ViewGroup
+import android.widget.Button
 import com.example.noteapp.aye.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
