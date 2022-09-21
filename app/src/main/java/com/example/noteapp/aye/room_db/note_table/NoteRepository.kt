@@ -7,7 +7,7 @@ class NoteRepository @Inject constructor(
     private val noteDao: NoteDao
 ) {
 
-    fun fetchNote(): Flow<List<Note>> {
+    fun fetchAllData(): Flow<List<Note>> {
         return noteDao.fetchAllData()
     }
 
