@@ -42,12 +42,12 @@ class AddFragment : Fragment() {
         val mPriority = binding.prioritiesSpinner.selectedItem.toString()
         val mDescription = binding.descriptionEt.text.toString()
 
-        val validation = verifyDataUser(mTitle, mDescription)
+        val validation = viewModel.verifyDataUser(mTitle, mDescription)
         if (validation) {
 
             val newData = com.example.noteapp.aye.room_db.note_table.Note(
                 title = mTitle,
-                priority = parsePriority(mPriority),
+                priority = viewModel.parsePriority(mPriority),
                 description = mDescription
             )
             viewModel.insertRecord(newData)
@@ -55,24 +55,5 @@ class AddFragment : Fragment() {
         }
     }
 
-    private fun verifyDataUser(title: String, description: String): Boolean {
-        return if (TextUtils.isEmpty(title) || TextUtils.isEmpty(description)) {
-            false
-        } else !(title.isEmpty() || description.isEmpty())
-    }
 
-    private fun parsePriority(priority: String): Priority {
-        return when (priority) {
-            "High Priority" -> {
-                Priority.High
-            }
-            "Medium Priority" -> {
-                Priority.High
-            }
-            "High Priority" -> {
-                Priority.High
-            }
-            else -> Priority.Low
-        }
-    }
 }
