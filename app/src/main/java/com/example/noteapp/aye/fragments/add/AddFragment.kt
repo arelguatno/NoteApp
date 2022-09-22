@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.provider.ContactsContract.CommonDataKinds.Note
 import android.text.TextUtils
 import android.view.*
+import android.widget.AdapterView
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -23,6 +26,7 @@ class AddFragment : Fragment() {
     ): View {
         binding = FragmentAddBinding.inflate(layoutInflater)
         setHasOptionsMenu(true)
+        binding.prioritiesSpinner.onItemSelectedListener = getColor()
         return binding.root
     }
 
@@ -53,6 +57,28 @@ class AddFragment : Fragment() {
             viewModel.insertRecord(newData)
             findNavController().navigateUp()
         }
+    }
+
+
+    fun getColor(): AdapterView.OnItemSelectedListener {
+        val listener: AdapterView.OnItemSelectedListener = object :
+            AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(p0: AdapterView<*>?) {}
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                when(position){
+                    0 -> { (parent?.getChildAt(0) as TextView).setTextColor(ContextCompat.getColor(requireContext(), R.color.red)) }
+                    1 -> { (parent?.getChildAt(0) as TextView).setTextColor(ContextCompat.getColor(requireContext(), R.color.yellow)) }
+                    2 -> { (parent?.getChildAt(0) as TextView).setTextColor(ContextCompat.getColor(requireContext(), R.color.green)) }
+                }
+            }
+        }
+
+        return listener
     }
 
 

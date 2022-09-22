@@ -1,6 +1,11 @@
 package com.example.noteapp.aye
 
+import android.app.Application
 import android.text.TextUtils
+import android.view.View
+import android.widget.AdapterView
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
