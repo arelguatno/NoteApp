@@ -8,6 +8,7 @@ import android.widget.AdapterView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
@@ -24,6 +25,13 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val repository: NoteRepository
 ) : ViewModel() {
+
+     val emptyDatabase: MutableLiveData<Boolean> = MutableLiveData(true)
+
+
+    fun checkIfDatabaseEmpty(note: List<Note>){
+        emptyDatabase.value = note.isEmpty()
+    }
 
     fun fetchAllData(): LiveData<List<Note>> {
         return repository.fetchAllData().asLiveData()
@@ -44,6 +52,12 @@ class MainViewModel @Inject constructor(
     fun deleteData(note: Note) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteData(note)
+        }
+    }
+
+    fun deleteAll() {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteAll()
         }
     }
 

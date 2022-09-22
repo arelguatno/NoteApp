@@ -22,4 +22,7 @@ interface NoteDao {
 
     @Delete
     suspend fun deleteData(note:Note)
+
+    @Query("DELETE from notes_table")
+    suspend fun deleteAll()
 }

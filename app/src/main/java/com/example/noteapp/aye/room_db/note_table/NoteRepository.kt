@@ -22,4 +22,8 @@ class NoteRepository @Inject constructor(
     suspend fun deleteData(note: Note){
         return noteDao.deleteData(note)
     }
+
+    suspend fun deleteAll(){
+        return noteDao.deleteAll()
+    }
 }

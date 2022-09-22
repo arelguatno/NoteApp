@@ -62,7 +62,7 @@ class AddFragment : Fragment() {
 
     private fun getColor(): AdapterView.OnItemSelectedListener {
         val listener: AdapterView.OnItemSelectedListener = object :
-            AdapterView.OnItemSelectedListener{
+            AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {}
             override fun onItemSelected(
                 parent: AdapterView<*>?,
@@ -70,10 +70,31 @@ class AddFragment : Fragment() {
                 position: Int,
                 id: Long
             ) {
-                when(position){
-                    0 -> { (parent?.getChildAt(0) as TextView).setTextColor(ContextCompat.getColor(requireContext(), R.color.red)) }
-                    1 -> { (parent?.getChildAt(0) as TextView).setTextColor(ContextCompat.getColor(requireContext(), R.color.yellow)) }
-                    2 -> { (parent?.getChildAt(0) as TextView).setTextColor(ContextCompat.getColor(requireContext(), R.color.green)) }
+                when (position) {
+                    0 -> {
+                        (parent?.getChildAt(0) as TextView).setTextColor(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.red
+                            )
+                        )
+                    }
+                    1 -> {
+                        (parent?.getChildAt(0) as TextView).setTextColor(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.yellow
+                            )
+                        )
+                    }
+                    2 -> {
+                        (parent?.getChildAt(0) as TextView).setTextColor(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.green
+                            )
+                        )
+                    }
                 }
             }
         }
