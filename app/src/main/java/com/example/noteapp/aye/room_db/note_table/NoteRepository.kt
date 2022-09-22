@@ -14,4 +14,12 @@ class NoteRepository @Inject constructor(
     suspend fun insertRecord(note: Note) {
         return noteDao.insertData(note)
     }
+
+    suspend fun updateData(note: Note) {
+        return noteDao.updateData(note)
+    }
+
+    suspend fun deleteData(note: Note){
+        return noteDao.deleteData(note)
+    }
 }

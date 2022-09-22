@@ -2,6 +2,7 @@ package com.example.noteapp.aye
 
 import android.app.Application
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.TextView
@@ -34,6 +35,18 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    fun updateData(note: Note) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.updateData(note)
+        }
+    }
+
+    fun deleteData(note: Note) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteData(note)
+        }
+    }
+
     fun verifyDataUser(title: String, description: String): Boolean {
         return if (TextUtils.isEmpty(title) || TextUtils.isEmpty(description)) {
             false
@@ -52,6 +65,14 @@ class MainViewModel @Inject constructor(
                 Priority.Low
             }
             else -> Priority.Low
+        }
+    }
+
+    fun parsePriorityToInt(priority: Priority): Int {
+        return when (priority) {
+            Priority.High -> 0
+            Priority.Medium -> 1
+            Priority.Low -> 2
         }
     }
 }
