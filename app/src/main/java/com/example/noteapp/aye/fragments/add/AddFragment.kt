@@ -60,7 +60,7 @@ class AddFragment : Fragment() {
     }
 
 
-    fun getColor(): AdapterView.OnItemSelectedListener {
+    private fun getColor(): AdapterView.OnItemSelectedListener {
         val listener: AdapterView.OnItemSelectedListener = object :
             AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(p0: AdapterView<*>?) {}
