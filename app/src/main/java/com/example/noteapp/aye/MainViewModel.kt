@@ -46,10 +46,10 @@ class MainViewModel @Inject constructor(
                 Priority.High
             }
             "Medium Priority" -> {
-                Priority.High
+                Priority.Medium
             }
-            "High Priority" -> {
-                Priority.High
+            "Low Priority" -> {
+                Priority.Low
             }
             else -> Priority.Low
         }

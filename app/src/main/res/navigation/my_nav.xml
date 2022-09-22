@@ -48,5 +48,8 @@
             app:exitAnim="@anim/to_left"
             app:popUpTo="@id/listFragment"
             app:popUpToInclusive="true" />
+        <argument
+            android:name="currentitem"
+            app:argType="com.example.noteapp.aye.room_db.note_table.Note" />
     </fragment>
 </navigation>
