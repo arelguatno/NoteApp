@@ -23,6 +23,8 @@ class UpdateFragment : Fragment() {
     private val args by navArgs<UpdateFragmentArgs>()
     private val viewModel: MainViewModel by activityViewModels()
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
