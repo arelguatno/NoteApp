@@ -1,23 +1,12 @@
 package com.example.noteapp.aye
 
-import android.app.Application
 import android.text.TextUtils
-import android.util.Log
-import android.view.View
-import android.widget.AdapterView
-import android.widget.TextView
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.noteapp.aye.data.Priority
 import com.example.noteapp.aye.room_db.note_table.Note
 import com.example.noteapp.aye.room_db.note_table.NoteRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -27,7 +16,6 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
     val emptyDatabase: MutableLiveData<Boolean> = MutableLiveData(false)
-
 
     fun checkIfDatabaseEmpty(note: List<Note>) {
         emptyDatabase.value = note.isEmpty()

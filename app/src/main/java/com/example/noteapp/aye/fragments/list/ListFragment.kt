@@ -7,12 +7,13 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.noteapp.aye.MainViewModel
 import com.example.noteapp.aye.R
 import com.example.noteapp.aye.databinding.FragmentListBinding
+import com.example.noteapp.aye.hideKeyBoard
+import com.example.noteapp.aye.observeOnce
 import com.example.noteapp.aye.room_db.note_table.Note
 import com.google.android.material.snackbar.Snackbar
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
@@ -45,6 +46,8 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
             viewModel.checkIfDatabaseEmpty(it)
             adapter.setData(it)
         }
+
+        hideKeyBoard(requireActivity())
 
 //        viewModel.emptyDatabase.observe(viewLifecycleOwner) {
 //            showEmptyDatabase(it)
@@ -100,7 +103,7 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
                 val itemToDelete = adapter.dataList[viewHolder.adapterPosition]
                 //Delete Item
                 viewModel.deleteData(itemToDelete)
-                adapter.notifyItemRemoved(viewHolder.adapterPosition)
+              //  adapter.notifyItemRemoved(viewHolder.adapterPosition)
                 //Restore Deleted Item
                 restoreDeletedData(viewHolder.itemView, itemToDelete, viewHolder.adapterPosition)
             }
@@ -118,7 +121,6 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
 
         snackbar.setAction("Undo") {
             viewModel.insertRecord(deletedItem)
-            adapter.notifyItemChanged(position)
         }
         snackbar.show()
     }
@@ -145,7 +147,7 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
         var searchQuery: String = query
         searchQuery = "%$query%"
 
-        viewModel.searchDatabase(searchQuery).observe(viewLifecycleOwner) {
+        viewModel.searchDatabase(searchQuery).observeOnce(viewLifecycleOwner) {
             it?.let {
                 adapter.setData(it)
             }
