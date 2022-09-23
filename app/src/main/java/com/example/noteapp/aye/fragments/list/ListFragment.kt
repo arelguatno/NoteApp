@@ -15,6 +15,10 @@ import com.example.noteapp.aye.R
 import com.example.noteapp.aye.databinding.FragmentListBinding
 import com.example.noteapp.aye.room_db.note_table.Note
 import com.google.android.material.snackbar.Snackbar
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter
+import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter
+import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 
 
 class ListFragment : Fragment() {
@@ -34,7 +38,9 @@ class ListFragment : Fragment() {
         val recyclerView = binding.recyclerView
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
-
+        recyclerView.itemAnimator = SlideInUpAnimator().apply {
+            addDuration = 300
+        }
         swipeToDelete(recyclerView)
 
         viewModel.fetchAllData().observe(viewLifecycleOwner) {

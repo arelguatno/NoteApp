@@ -26,7 +26,7 @@ class MainViewModel @Inject constructor(
     private val repository: NoteRepository
 ) : ViewModel() {
 
-     val emptyDatabase: MutableLiveData<Boolean> = MutableLiveData(true)
+     val emptyDatabase: MutableLiveData<Boolean> = MutableLiveData(false)
 
 
     fun checkIfDatabaseEmpty(note: List<Note>){
