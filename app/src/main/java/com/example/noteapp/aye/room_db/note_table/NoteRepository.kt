@@ -11,6 +11,14 @@ class NoteRepository @Inject constructor(
         return noteDao.fetchAllData()
     }
 
+    fun sortByHighPriority(): Flow<List<Note>> {
+        return noteDao.sortByHighPriority()
+    }
+
+    fun sortByLowPriority(): Flow<List<Note>> {
+        return noteDao.sortByLowPriority()
+    }
+
     suspend fun insertRecord(note: Note) {
         return noteDao.insertData(note)
     }
@@ -19,11 +27,15 @@ class NoteRepository @Inject constructor(
         return noteDao.updateData(note)
     }
 
-    suspend fun deleteData(note: Note){
+    suspend fun deleteData(note: Note) {
         return noteDao.deleteData(note)
     }
 
-    suspend fun deleteAll(){
+    suspend fun deleteAll() {
         return noteDao.deleteAll()
+    }
+
+    fun searchDatabase(q: String): Flow<List<Note>> {
+        return noteDao.searchDatabase(q)
     }
 }

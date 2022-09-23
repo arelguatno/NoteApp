@@ -3,11 +3,9 @@ package com.example.noteapp.aye.fragments.list
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,13 +15,10 @@ import com.example.noteapp.aye.R
 import com.example.noteapp.aye.databinding.FragmentListBinding
 import com.example.noteapp.aye.room_db.note_table.Note
 import com.google.android.material.snackbar.Snackbar
-import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter
-import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter
-import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 
 
-class ListFragment : Fragment() {
+class ListFragment : Fragment(), SearchView.OnQueryTextListener {
     private lateinit var binding: FragmentListBinding
     private val adapter: ListAdapter by lazy { ListAdapter() }
     private val viewModel: MainViewModel by activityViewModels()
@@ -39,7 +34,8 @@ class ListFragment : Fragment() {
 
         val recyclerView = binding.recyclerView
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        recyclerView.layoutManager = //LinearLayoutManager(requireContext())
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         recyclerView.itemAnimator = SlideInUpAnimator().apply {
             addDuration = 300
         }
@@ -71,12 +67,30 @@ class ListFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.list_fragment_menu, menu)
+        val search: MenuItem = menu.findItem(R.id.menu_search)
+        val searchView = search.actionView as? SearchView
+
+        searchView?.isSubmitButtonEnabled = true
+        searchView?.setOnQueryTextListener(this)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.menu_delete_all) {
             confirmItemRemoval()
         }
+
+        if(item.itemId == R.id.menu_priority_high){
+            viewModel.sortByHighPriority().observe(viewLifecycleOwner){
+                adapter.setData(it)
+            }
+        }
+
+        if(item.itemId == R.id.menu_priority_low){
+            viewModel.sortByLowPriority().observe(viewLifecycleOwner){
+                adapter.setData(it)
+            }
+        }
+
         return super.onOptionsItemSelected(item)
     }
 
@@ -118,5 +132,30 @@ class ListFragment : Fragment() {
         builder.setTitle("Delete everything")
         builder.setMessage("Are you sure you want to delete everything?")
         builder.show()
+    }
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        if (query != null) {
+            searchThroughDatabase(query)
+        }
+        return true
+    }
+
+    private fun searchThroughDatabase(query: String) {
+        var searchQuery: String = query
+        searchQuery = "%$query%"
+
+        viewModel.searchDatabase(searchQuery).observe(viewLifecycleOwner) {
+            it?.let {
+                adapter.setData(it)
+            }
+        }
+    }
+
+    override fun onQueryTextChange(query: String?): Boolean {
+        if (query != null) {
+            searchThroughDatabase(query)
+        }
+        return true
     }
 }

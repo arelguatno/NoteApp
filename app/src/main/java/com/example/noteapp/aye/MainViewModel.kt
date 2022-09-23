@@ -26,15 +26,28 @@ class MainViewModel @Inject constructor(
     private val repository: NoteRepository
 ) : ViewModel() {
 
-     val emptyDatabase: MutableLiveData<Boolean> = MutableLiveData(false)
+    val emptyDatabase: MutableLiveData<Boolean> = MutableLiveData(false)
 
 
-    fun checkIfDatabaseEmpty(note: List<Note>){
+    fun checkIfDatabaseEmpty(note: List<Note>) {
         emptyDatabase.value = note.isEmpty()
     }
 
     fun fetchAllData(): LiveData<List<Note>> {
         return repository.fetchAllData().asLiveData()
+    }
+
+    fun sortByLowPriority(): LiveData<List<Note>> {
+        return repository.sortByLowPriority().asLiveData()
+    }
+
+    fun sortByHighPriority(): LiveData<List<Note>> {
+        return repository.sortByHighPriority().asLiveData()
+    }
+
+
+    fun searchDatabase(q: String): LiveData<List<Note>> {
+        return repository.searchDatabase(q).asLiveData()
     }
 
     fun insertRecord(note: Note) {

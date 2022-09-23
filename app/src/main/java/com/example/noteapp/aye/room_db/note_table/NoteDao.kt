@@ -25,4 +25,15 @@ interface NoteDao {
 
     @Query("DELETE from notes_table")
     suspend fun deleteAll()
+
+    @Query("SELECT * FROM notes_table WHERE title LIKE :searchQuery")
+    fun searchDatabase(searchQuery: String): Flow<List<Note>>
+
+
+    @Query("SELECT * FROM notes_table ORDER BY CASE WHEN priority LIKE 'H%' THEN 1 WHEN priority LIKE 'M%' THEN 2 WHEN priority LIKE 'L%' THEN 3 END")
+    fun sortByHighPriority(): Flow<List<Note>>
+
+    @Query("SELECT * FROM notes_table ORDER BY CASE WHEN priority LIKE 'L%' THEN 1 WHEN priority LIKE 'M%' THEN 2 WHEN priority LIKE 'H%' THEN 3 END")
+    fun sortByLowPriority(): Flow<List<Note>>
+
 }
