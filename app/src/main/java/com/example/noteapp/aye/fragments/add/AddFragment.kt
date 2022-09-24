@@ -7,8 +7,11 @@ import android.view.*
 import android.widget.AdapterView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.noteapp.aye.MainViewModel
 import com.example.noteapp.aye.R
@@ -25,20 +28,27 @@ class AddFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentAddBinding.inflate(layoutInflater)
-        setHasOptionsMenu(true)
         binding.prioritiesSpinner.onItemSelectedListener = getColor()
         return binding.root
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.add_fragment_menu, menu)
-    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val menuHost: MenuHost = requireActivity()
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.menu_add) {
-            insertDataToDb()
-        }
-        return super.onOptionsItemSelected(item)
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.add_fragment_menu, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                if (menuItem.itemId == R.id.menu_add) {
+                    insertDataToDb()
+                }
+                return true
+            }
+        },viewLifecycleOwner, Lifecycle.State.RESUMED)
+
     }
 
     private fun insertDataToDb() {

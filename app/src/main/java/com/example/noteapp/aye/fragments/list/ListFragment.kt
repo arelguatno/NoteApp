@@ -4,8 +4,11 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -27,7 +30,7 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentListBinding.inflate(layoutInflater)
         binding.lifecycleOwner = this
@@ -53,11 +56,10 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
 //            showEmptyDatabase(it)
 //        }
 
-        setHasOptionsMenu(true)
         return binding.root
     }
 
-//    private fun showEmptyDatabase(emptyDatabase: Boolean) {
+    //    private fun showEmptyDatabase(emptyDatabase: Boolean) {
 //        if (emptyDatabase) {
 //            binding.noDataImageView.visibility = View.VISIBLE
 //            binding.noDataTextView.visibility = View.VISIBLE
@@ -67,43 +69,13 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
 //
 //        }
 //    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.list_fragment_menu, menu)
-        val search: MenuItem = menu.findItem(R.id.menu_search)
-        val searchView = search.actionView as? SearchView
-
-        searchView?.isSubmitButtonEnabled = true
-        searchView?.setOnQueryTextListener(this)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.menu_delete_all) {
-            confirmItemRemoval()
-        }
-
-        if(item.itemId == R.id.menu_priority_high){
-            viewModel.sortByHighPriority().observe(viewLifecycleOwner){
-                adapter.setData(it)
-            }
-        }
-
-        if(item.itemId == R.id.menu_priority_low){
-            viewModel.sortByLowPriority().observe(viewLifecycleOwner){
-                adapter.setData(it)
-            }
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
-
     private fun swipeToDelete(recyclerView: RecyclerView) {
         val swipeToDelete = object : SwipeToDelete() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val itemToDelete = adapter.dataList[viewHolder.adapterPosition]
                 //Delete Item
                 viewModel.deleteData(itemToDelete)
-              //  adapter.notifyItemRemoved(viewHolder.adapterPosition)
+                //  adapter.notifyItemRemoved(viewHolder.adapterPosition)
                 //Restore Deleted Item
                 restoreDeletedData(viewHolder.itemView, itemToDelete, viewHolder.adapterPosition)
             }
@@ -152,6 +124,48 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
                 adapter.setData(it)
             }
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val menuHost: MenuHost = requireActivity()
+
+        menuHost.addMenuProvider(object : MenuProvider {
+
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.list_fragment_menu, menu)
+                val search: MenuItem = menu.findItem(R.id.menu_search)
+                val searchView = search.actionView as? SearchView
+
+                searchView?.isSubmitButtonEnabled = true
+                searchView?.setOnQueryTextListener(this@ListFragment)
+            }
+
+            override fun onMenuItemSelected(item: MenuItem): Boolean {
+                if (item.itemId == R.id.menu_delete_all) {
+                    confirmItemRemoval()
+                }
+
+                if (item.itemId == R.id.menu_priority_high) {
+                    viewModel.sortByHighPriority().observe(viewLifecycleOwner) {
+                        adapter.setData(it)
+                    }
+                }
+
+                if (item.itemId == R.id.menu_priority_low) {
+                    viewModel.sortByLowPriority().observe(viewLifecycleOwner) {
+                        adapter.setData(it)
+                    }
+                }
+
+                if(item.itemId == androidx.appcompat.R.id.home){
+                    requireActivity().finish()
+                }
+
+                return true
+            }
+
+        },viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     override fun onQueryTextChange(query: String?): Boolean {
