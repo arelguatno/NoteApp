@@ -13,9 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.noteapp.aye.MainViewModel
 import com.example.noteapp.aye.R
-import com.example.noteapp.aye.data.Priority
 import com.example.noteapp.aye.databinding.FragmentUpdateBinding
-import com.example.noteapp.aye.room_db.note_table.Note
 
 
 class UpdateFragment : Fragment() {
@@ -28,7 +26,7 @@ class UpdateFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentUpdateBinding.inflate(layoutInflater)
         setHasOptionsMenu(true)
 

@@ -1,8 +1,6 @@
 package com.example.noteapp.aye.fragments.add
 
 import android.os.Bundle
-import android.provider.ContactsContract.CommonDataKinds.Note
-import android.text.TextUtils
 import android.view.*
 import android.widget.AdapterView
 import android.widget.TextView
@@ -15,7 +13,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.noteapp.aye.MainViewModel
 import com.example.noteapp.aye.R
-import com.example.noteapp.aye.data.Priority
 import com.example.noteapp.aye.databinding.FragmentAddBinding
 
 

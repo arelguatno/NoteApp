@@ -1,7 +1,6 @@
 package com.example.noteapp.aye.fragments.list
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
@@ -61,6 +60,7 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
                     R.color.green
                 )
             )
+            else -> {}
         }
     }
 
